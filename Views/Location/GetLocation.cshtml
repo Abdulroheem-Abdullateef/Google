@@ -1,0 +1,32 @@
+﻿@model List<Google.Models.Location>
+@{
+    ViewData["Title"] = "Locations";
+}
+
+<h2>Locations</h2>
+
+<div id="map" style="height: 400px;"></div>
+<a href="c:\users\adeyemi\desktop\summary\google\views\location\getlocation.cshtml">c:\users\adeyemi\desktop\summary\google\views\location\getlocation.cshtml</a>
+<script>
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 37.7749, lng: -122.4194 }, // Set the initial center
+            zoom: 8
+        });
+
+        // Fetch locations from the API
+        fetch('/api/location')
+            .then(response => response.json())
+            .then(locations => {
+                locations.forEach(location => {
+                    var marker = new google.maps.Marker({
+                        position: { lat: location.latitude, lng: location.longitude },
+                        map: map,
+                        title: location.name
+                    });
+                });
+            });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
